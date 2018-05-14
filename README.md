@@ -1,3 +1,6 @@
 # ansible
 Ansible Project
-## This repository is for study purpose
+## Steps to start VMs
+'''
+vagrant up --provider=hyperv
+'''
