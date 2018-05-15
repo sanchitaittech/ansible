@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
     web.vm.provider = "hyperv"
   end
   config.vm.define "db" do |db|
-    db.vm.box = "mysql"
+    db.vm.box = "centos/7"
     db.vm.provider = "hyperv"
   end 
 end
