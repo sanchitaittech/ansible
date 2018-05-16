@@ -4,13 +4,38 @@
 - name: "Install Apache packages"
   yum: 
     name: httpd
-    state:present
+    state: present
   notify: Restart Apache
-  
-- name: "Copy index.htmlt"
-  template: src=index.html dest=/var/www/html/index.html
 
-handlers:
-  - name: Restart Apache
-    service: name=httpd state=restarted enabled=yes
+- name: "Creating site virtualhost"
+  file:
+    path: /var/www/html
+    state: directory
+    mode: 0755
+    owner: apache
+    group: apache
+   
+- name: "Copy index.html"
+  template: src=index.html.j2 dest=/var/www/html/index.html
+  
+- name: "Install PHP packages"
+  yum: state=present name={{ item }}
+  with_items:
+    - php
+    - php-common
+    - php-devel
+    - php-fpm
+    - php-gd
+    - php-mbstring
+    - php-mysqlnd
+    - php-pdo
+    - php-pgsql
+    - php-process
+    - php-recode
+    - php-soap
+    - php-xml
+  notify: Restart Apache
+
+- name: "Copy PHP Info"
+  template: src=info.php.j2 dest=/var/www/html/info.php
 ...

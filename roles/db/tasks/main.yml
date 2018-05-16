@@ -1,34 +1,11 @@
 ---
 # tasks file for db
 
-- name: "Install PHP packages"
+- name: "Install MariaDB packages"
   yum: state=present name={{ item }}
   with_items:
-    - php71u-cli
-    - php71u-common
-    - php71u-dbg
-    - php71u-devel
-    - php71u-fpm
-    - php71u-gd
-    - php71u-mbstring
-    - php71u-mysqlnd
-    - php71u-pdo
-    - php71u-pgsql
-    - php71u-process
-    - php71u-recode
-    - php71u-soap
-    - php71u-tidy
-    - php71u-xml
-    - mod_php71u
-    - php71u-mcrypt
-    - php71u-json
-    - php71u-mcrypt
-    - php71u-pecl-imagick
-    - php71u-opcache
-    - php71u-pecl-redis
-  notify: Restart Apache
+    - mariadb
+    - mariadb-server
+  notify: Restart MariaDB 
   
-  handlers:
-  - name: Restart Apache
-    service: name=httpd state=restarted enabled=yes
 ...
