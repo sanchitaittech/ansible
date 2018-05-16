@@ -1,2 +1,16 @@
 ---
 # tasks file for web
+
+- name: "Install Apache packages"
+  yum: 
+    name: httpd
+    state:present
+  notify: Restart Apache
+  
+- name: "Copy index.htmlt"
+  template: src=index.html dest=/var/www/html/index.html
+
+handlers:
+  - name: Restart Apache
+    service: name=httpd state=restarted enabled=yes
+...
