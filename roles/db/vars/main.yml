@@ -1,2 +1,9 @@
 ---
 # vars file for db
+
+##################################
+# Database configuration options
+##################################
+db_name: wp_db
+db_user: wp_user
+db_password: wp1234
