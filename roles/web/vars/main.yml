@@ -22,6 +22,6 @@ db_server: "{{ hostvars[groups['dbservers'][0]]['ansible_default_ipv4']['address
 # Wordpress configuration option
 ######################################
 LATEST_WP_URL: https://wordpress.org/latest.tar.gz
-DOWNLOAD_PATH: /tmp/(date + '%Y%m%d')
+DOWNLOAD_PATH: /tmp/wordress/
 
 

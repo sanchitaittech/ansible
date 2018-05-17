@@ -50,9 +50,11 @@
 #  template: src=info.php.j2 dest=/var/www/html/info.php
 
 - name: "Wordpress | Download Wordpress"
-  unarchive: remote_src=yes src="{{ LATEST_WP_URL }}" dest=DOWNLOAD_PATH
+  unarchive: remote_src=yes src="{{ LATEST_WP_URL }}" dest="{{ DOWNLOAD_PATH  }}"
 
 - name: "Wordpress | Rename download folder"
+  command: mv "{{ DOWNLOAD_PATH }}"/wordpress* "{{ DOWNLOAD_PATH }}"/wordpress
+  
   
   
 ...
