@@ -1,24 +1,34 @@
 ---
 # tasks file for web
 
-- name: "Install Apache packages"
+- name: "Apache | Install Apache packages"
   yum: 
     name: httpd
     state: present
+    enabled: yes
   notify: Restart Apache
 
-- name: "Creating site virtualhost"
+- neme: "Apache | Include variables of Database Server in Webserver"
+  include_vars: 
+    dir: roles/db/vars
+    extensions: yml
+
+- name: "Apache | Create Virtualhost file for the site '{{ virtualhost_domain }}'"
+  template: src=virtualhost.conf.j2 dest=/etc/httpd/vhost.d/{{ virtualhost_domain|replace('.','_')}}.conf
+  
+
+- name: "Apache | Creating Documentroot for the site '{{ virtualhost_domain }}'"
   file:
-    path: /var/www/html
+    path: {{ app_path }}
     state: directory
     mode: 0755
     owner: apache
     group: apache
    
-- name: "Copy index.html"
-  template: src=index.html.j2 dest=/var/www/html/index.html
+#- name: "Copy index.html"
+#  template: src=index.html.j2 dest=/var/www/html/index.html
   
-- name: "Install PHP packages"
+- name: "PHP | Install PHP packages"
   yum: state=present name={{ item }}
   with_items:
     - php
@@ -36,6 +46,13 @@
     - php-xml
   notify: Restart Apache
 
-- name: "Copy PHP Info"
-  template: src=info.php.j2 dest=/var/www/html/info.php
+#- name: "Copy PHP Info"
+#  template: src=info.php.j2 dest=/var/www/html/info.php
+
+- name: "Wordpress | Download Wordpress"
+  unarchive: remote_src=yes src="{{ LATEST_WP_URL }}" dest=DOWNLOAD_PATH
+
+- name: "Wordpress | Rename download folder"
+  
+  
 ...
