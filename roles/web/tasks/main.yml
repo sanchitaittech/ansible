@@ -19,11 +19,13 @@
 
 - name: "Apache | Creating Documentroot for the site '{{ virtualhost_domain }}'"
   file:
-    path: {{ app_path }}
+    path: "{{ app_path }}"
     state: directory
     mode: 0755
     owner: apache
     group: apache
+   stat: path="{{ app_path }}"/wp-content/uploads
+   register: wordpress_install
    
 #- name: "Copy index.html"
 #  template: src=index.html.j2 dest=/var/www/html/index.html
@@ -49,12 +51,33 @@
 #- name: "Copy PHP Info"
 #  template: src=info.php.j2 dest=/var/www/html/info.php
 
+block:
 - name: "Wordpress | Download Wordpress"
-  unarchive: remote_src=yes src="{{ LATEST_WP_URL }}" dest="{{ DOWNLOAD_PATH  }}"
+  unarchive: remote_src=yes src="{{ LATEST_WP_URL }}" dest="{{ DOWNLOAD_PATH }}"
 
 - name: "Wordpress | Rename download folder"
-  command: mv "{{ DOWNLOAD_PATH }}"/wordpress* "{{ DOWNLOAD_PATH }}"/wordpress
+  command: cd /tmp;mv "{{ DOWNLOAD_PATH }}"/wordpress* "{{ DOWNLOAD_PATH }}"/wordpress
+
+- name: "Wordpressv| Remove downloaded wordpress zipped file"
+  command: cd /tmp; rm -f *.zip
   
+- name: "Application | Copy wordpress files to the application document root"
+  command: rsync -avP /tmp/wordpress/wordpress/ "{{ app_path }}"
   
+- name: "Application | Create uploads folder for application"
+  command: mkdir "{{ app_path }}"/wp-content/uploads
   
+- neme: "Application | Create Database configuration file for the site '{{ virtualhost_domain }}'"
+  template: src=wp-config.php.j2 dest="{{ app_path }}"/wp-config.php
+  
+- name: "Application | Permission set for the documentroot"
+  file:
+    path: "{{ app_path }}"
+    state: directory
+    mode: 0755
+    owner: apache
+    group: apache
+    recurse: yes
+      
+ when: wordpress_install.stat.exits == False
 ...
