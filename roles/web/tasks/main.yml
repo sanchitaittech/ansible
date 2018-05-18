@@ -15,7 +15,7 @@
 
 - name: "Apache | Create Virtualhost file for the site '{{ virtualhost_domain }}'"
   command: mkdir /etc/httpd/vhost.d
-  template: src=virtualhost.conf.j2 dest=/etc/httpd/vhost.d/{{ virtualhost_domain|replace('.','_')}}.conf
+  template: src=vhost.conf.j2 dest=/etc/httpd/vhost.d/{{ virtualhost_domain|replace('.','_')}}.conf
   
 
 - name: "Apache | Creating Documentroot for the site '{{ virtualhost_domain }}'"
