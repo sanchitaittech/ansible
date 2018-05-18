@@ -6,18 +6,18 @@
   with_items:
     - mariadb
     - mariadb-server
+    - MySQL-python
   notify: Restart MariaDB 
   
   
- - name: "Create a Database with name '{{ db_name }}'"
-   mysql_db: name="{{ db_name }}" state=present
+- name: "Create a Database with name {{ db_name }}"
+  mysql_db: name={{ db_name }} state=present
    
- - name: "Create a Database user with name '{{ db_user }}' for the Database '{{ db_name }}'"
-   mysql_user:
-     db: {{ db_name }}
-     name: {{ db_user }}
-     password: {{ db_password}}
-     priv: '*.*:ALL'
-     state: present
+- name: "Create a Database user with name {{ db_user }} for the Database {{ db_name }}"
+  mysql_user:
+    name: "{{ db_user }}"@*
+    password: "{{ db_password }}"
+    priv: '*.*:ALL'
+    state: present
    
 ...

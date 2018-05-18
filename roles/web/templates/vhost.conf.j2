@@ -1,0 +1,20 @@
+#
+#{{ virtualhost_domain }} - vHost file
+#
+
+###################################################################
+
+<Directory /var/www/html/{{ virtualhost_domain }}>
+    Options -Indexes FollowSymlinks
+    AllowOverride All
+</Directory>
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@{{ virtualhost_domain }}
+    DocumentRoot "{{ app_path }}"
+    Options -Indexes FollowSymlinks
+    ServerName {{ virtualhost_domain }}
+    ServerAlias *.{{ virtualhost_domain }}
+    ErrorLog "/var/log/httpd/{{ virtualhost_domain }}-error_log"
+    CustomLog "/var/log/httpd/{{ virtualhost_domain }}-access_log" combined
+</VirtualHost>

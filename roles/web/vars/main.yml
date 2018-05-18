@@ -9,19 +9,20 @@ virtualhost_domain: worldofjoy.com
 ######################################
 # Application setup option
 ######################################
-app_path: /var/www/html/{{ virtualhost_domain|replace('.','_')}}
+app_path: /var/www/html/{{ virtualhost_domain }}
 
 
 
 ######################################
 # Database server conection
 ######################################
-db_server: "{{ hostvars[groups['dbservers'][0]]['ansible_default_ipv4']['address']}}"
+#db_server: "{{ hostvars[groups['dbservers'][0]]['ansible_ssh_hostname'] }}"
+db_server: 172.18.56.182
 
 ######################################
 # Wordpress configuration option
 ######################################
 LATEST_WP_URL: https://wordpress.org/latest.tar.gz
-DOWNLOAD_PATH: /tmp/wordress/
+DOWNLOAD_PATH: /tmp/
 
 
