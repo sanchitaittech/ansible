@@ -9,6 +9,7 @@
   with_items:
     - ntp
     - wget
+    - unzip
   
 - name: "Update Banner"
   template: src=motd.j2 dest=/etc/motd
