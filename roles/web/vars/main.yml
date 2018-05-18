@@ -17,7 +17,8 @@ app_path: /var/www/html/{{ virtualhost_domain }}
 # Database server conection
 ######################################
 #db_server: "{{ hostvars[groups['dbservers'][0]]['ansible_ssh_hostname'] }}"
-db_server: 172.18.56.182
+#db_server: 172.18.56.182
+db_server: "{{ ansible_all_ipv4_addresses[0] }}"
 
 ######################################
 # Wordpress configuration option
