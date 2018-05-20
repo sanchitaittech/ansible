@@ -1,0 +1,21 @@
+- name: Users | configure deploy user on all hosts
+  hosts: all
+  remote_user: root
+  gather_facts: False
+  
+  tasks:
+  - name: User | Create user called deploy
+    user: name=deploy shell=/bin/bash groups=wheel password={{ user_hash }} update_password=always
+
+  - name: SSH Key | Copy SSH key
+    authorized_key: user=deploy key={{ item }} state=present
+    with_file:
+    - public_keys/deploy
+
+  - name: SUDO | Update sudoers file to enable password less sudo
+    lineinfile: 
+      dest: /etc/sudoers 
+      state: present 
+      regexp: '^%wheel' 
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL' 
+      validate: 'visudo -cf %s'

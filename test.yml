@@ -1,0 +1,11 @@
+- name: check varibales
+  hosts: all
+  remote_user: deploy
+  gather_facts: True
+
+  tasks:
+  - name: Single IP
+    debug: msg="{{ hostvars['web']['ansible_all_ipv4_addresses'] }}"
+
+  - name: Information
+    debug: msg="IP address {{ hostvars[groups]['dbservers'][0]['ansible_all_ipv4_addresses'] }}"

@@ -9,6 +9,12 @@
     - MySQL-python
   notify: Restart MariaDB 
 
+- name: "Firewall | Enable MySQL  ports in firewall"
+  firewalld: zone=public service="{{ item }}" permanent=true state=enabled
+  with_items:
+    - mysql
+  notify: Reload Firewalld
+
 - name: Start mariadb service
   service: name=mariadb state=started 
   
@@ -21,6 +27,7 @@
     password: "{{ db_password }}"
     priv: '*.*:ALL'
     state: present
+    host: "%"
 
 - name: Give hostall permission to mysql user
   mysql_user: name={{ db_user }} host_all=yes

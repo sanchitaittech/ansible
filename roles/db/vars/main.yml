@@ -7,3 +7,4 @@
 db_name: wp_db
 db_user: wp_user
 db_password: wp1234
+db_server: "{{ hostvars['db']['ansible_all_ipv4_addresses'][0] }}"
