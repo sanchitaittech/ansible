@@ -4,5 +4,5 @@
 - name: Restart MariaDB
   service: name=mariadb state=restarted enabled=yes
 
-- name: Reload Firewalld
+- name: Restart Firewalld
   service: name=firewalld state=restarted enabled=yes

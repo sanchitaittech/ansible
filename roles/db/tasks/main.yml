@@ -13,7 +13,7 @@
   firewalld: zone=public service="{{ item }}" permanent=true state=enabled
   with_items:
     - mysql
-  notify: Reload Firewalld
+  notify: Restart Firewalld
 
 - name: Start mariadb service
   service: name=mariadb state=started 

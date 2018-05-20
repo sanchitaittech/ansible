@@ -12,6 +12,7 @@
   with_items:
     - http
     - https
+  notify: Restart Firewalld
 
 - name: "Apache | Include variables of Database Server in Webserver"
   include_vars: ../../roles/db/vars/main.yml
