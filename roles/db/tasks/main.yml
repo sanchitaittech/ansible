@@ -1,7 +1,7 @@
 ---
 # tasks file for db
 
-- name: "Install MariaDB packages"
+- name: "MariaDB | Install MariaDB packages"
   yum: state=present name={{ item }}
   with_items:
     - mariadb
@@ -9,19 +9,26 @@
     - MySQL-python
   notify: Restart MariaDB 
 
-- name: Start mariadb service
+- name: "MariaDB | Enable MySQL  ports in firewall"
+  firewalld: zone=public service="{{ item }}" permanent=true state=enabled
+  with_items:
+    - mysql
+  notify: Restart Firewalld
+  
+- name: MariaDB | Start mariadb service
   service: name=mariadb state=started 
   
-- name: "Create a Database with name {{ db_name }}"
+- name: "MariaDB | Create a Database with name {{ db_name }}"
   mysql_db: name={{ db_name }} state=present
    
-- name: "Create a Database user with name {{ db_user }} for the Database {{ db_name }}"
+- name: "MariaDB | Create a Database user with name {{ db_user }} for the Database {{ db_name }}"
   mysql_user:
     name: "{{ db_user }}"
     password: "{{ db_password }}"
     priv: '*.*:ALL'
     state: present
+    host: "%"
 
-- name: Give hostall permission to mysql user
+- name: MariaDB | Give hostall permission to mysql user
   mysql_user: name={{ db_user }} host_all=yes
 ...
