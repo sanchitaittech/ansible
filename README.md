@@ -4,7 +4,7 @@ Ansible Project
 ```
 vagrant up --provider=hyperv
 ```
-## Create initial user "centos"
+## Create initial user "deploy"
 
 #### Create encryted password/text/using:
 ```
@@ -14,8 +14,8 @@ mkpasswd --method=sha-512
 
 #### Create variable in call user_hash with output text of above command and use it user module
 
+user_hash=<output from above command>
 
 ```
-ansible all -u root -m user -a "name=centos shell=/bin/bash groups=wheel password={{ user_hash }} update_password=always"
-
+ansible-playbook -k user.yml
 ```
