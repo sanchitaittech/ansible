@@ -1,9 +1,16 @@
 # ansible
 Ansible Project
+
 ## Steps to start VMs
 ```
 vagrant up --provider=hyperv
 ```
+## Install Ansible packages in Ansible Server
+```
+yum install -y python-pip
+pip install ansible
+```
+
 ## Create initial user "deploy"
 
 #### Create encryted password/text/using:
