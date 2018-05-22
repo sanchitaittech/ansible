@@ -1,0 +1,16 @@
+- name: EC2 | VM provisioning on AWS 
+  ec2:
+    region: us-east-2
+    key_name: mykey
+    instance_type: t2.micro
+    image: ami-922914f7
+    wait: yes
+    group: webserver
+    count: 1
+    vpc_subnet_id: subnet-9d4e5ed0
+    instance_tags: 
+      type: webserver
+      cms: wordpress
+      owner: sanchita
+      creator: naresh
+    assign_public_ip: yes

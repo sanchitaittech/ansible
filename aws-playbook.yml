@@ -1,0 +1,7 @@
+- name: Create instances
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  roles:
+    - aws
