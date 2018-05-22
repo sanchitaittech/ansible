@@ -1,8 +1,8 @@
 ---
 
-#My Playbook to configure wWebserver and DB server
+#My Playbook to configure Ansible server, Webserver and DB server
 
-- name: "Configure Common packeges in all servers"
+- name: "COMMON PACKAGE | Configure Common packeges in all servers"
   hosts: all
   become: True
   gather_facts: False
@@ -10,16 +10,19 @@
   roles:
   - common
   
-- name: " Configure DB server"
+  
+- name: "DB SERVER | Configure DB server"
   hosts: dbservers 
+  remote_user: deploy
   become: True
-  gather_facts: False
+  gather_facts: True
 
   roles:
   - db
 
-- name: "Configure Web server"
+- name: "WEB SERVER | Configure Web server"
   hosts: webservers
+  remote_user: deploy
   become: True
   gather_facts: False
 
