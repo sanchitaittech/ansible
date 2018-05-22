@@ -1,5 +1,5 @@
 #
-#{{ virtualhost_domain }} - vHost file
+#{{ website_name }} - vHost file
 #
 
 ###################################################################
@@ -11,10 +11,10 @@
 
 <VirtualHost *:80>
     ServerAdmin webmaster@{{ virtualhost_domain }}
-    DocumentRoot "{{ app_path }}"
+    DocumentRoot "{{ app_path }}{{ virtualhost_domain }}"
     Options -Indexes FollowSymlinks
-    ServerName {{ virtualhost_domain }}
-    ServerAlias *.{{ virtualhost_domain }}
+    ServerName {{ website_name }}
+    ServerAlias *.{{ website_name }}
     ErrorLog "/var/log/httpd/{{ virtualhost_domain }}-error_log"
     CustomLog "/var/log/httpd/{{ virtualhost_domain }}-access_log" combined
 </VirtualHost>
