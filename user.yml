@@ -1,0 +1,26 @@
+---
+#This playbook is to create "deploy" user in remote system
+
+- name: User | Configure deploy user on all hosts
+  hosts: all
+  remote_user: root
+  gather_facts: False
+  
+  task:
+  - name: User | Create deploy user
+    user: name=deploy shell=/bin/bash groups=wheel password={{ user_hash }} update_password=always
+	
+  - name: User | Copy public key of deploy user to all hosts
+    authorized_key: user=deploy key={{ item }} state=present
+	with_file:
+	- public_keys/deploy
+	
+  - neme: User | SUDO permission provide to deploy user as passwordless SUDO
+    lineinfile:
+	  dest: /etc/sudoers
+	  state: present
+	  regexp: '^%wheel'
+	  line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+	  validate: 'visudo -cf %s'
+
+...
