@@ -4,21 +4,13 @@
 ######################################
 # Virtual Host configuration option
 ######################################
-virtualhost_domain: worldofjoy.com
+website_name: worldofjoy.com
+virtualhost_domain: "{{ website_name | replace('.','_') }}"
 
 ######################################
 # Application setup option
 ######################################
-app_path: /var/www/html/{{ virtualhost_domain }}
-
-
-
-######################################
-# Database server conection
-######################################
-#db_server: "{{ hostvars[groups['dbservers'][0]]['ansible_ssh_hostname'] }}"
-#db_server: 172.18.56.182
-db_server: "{{ ansible_all_ipv4_addresses[0] }}"
+app_path: /var/www/html
 
 ######################################
 # Wordpress configuration option
