@@ -6,6 +6,13 @@
     name: httpd
     state: present
   notify: Restart Apache
+  
+- neme: "Firewall | Enable HTTP ports in Firewall"
+  firewalld: zone=public service="{{ item }}" permanent=true state=enabled
+  with_items:
+    - http
+    - https
+  notify: Restart Firewalld
 
 - name: "Apache | Include variables of Database Server in Webserver"
   include_vars: ../../roles/db/vars/main.yml
@@ -15,18 +22,11 @@
 
 
 - name: "Apache | Create virtualhost file" 
-  template: src=vhost.conf.j2 dest=/etc/httpd/vhost.d/web.conf
+  template: src=vhost.conf.j2 dest=/etc/httpd/vhost.d/{{ virtualhost_domain }}.conf
 
-- name: "Apache | Creating Documentroot for the site"
-  file:
-    path: "{{ app_path }}"
-    state: directory
-    mode: 0755
-    owner: apache
-    group: apache
 
 - name: " Apache | Cheching before wordpress install"
-  stat: path={{ app_path }}/wp-content/uploads
+  stat: path={{ app_path }}{{ virtualhost_domain }}/wp-content/uploads
   register: wordpress_install
    
 #- name: "Copy index.html"
@@ -63,13 +63,14 @@
 #    - command: cd /tmp;mv "{{ DOWNLOAD_PATH }}"/wordpress* "{{ DOWNLOAD_PATH }}"/wordpress
 
     - debug: msg="Application | Copy wordpress files to the application document root"
-    - command: cp -ra /tmp/wordpress/* "{{ app_path }}"
+    - command: cp -ra /tmp/wordpress/* "{{ app_path }}{{ virtualhost_domain }}"
   
     - debug: msg="Application | Create uploads folder for application"
-    - command: mkdir "{{ app_path }}"/wp-content/uploads
+    #- command: mkdir "{{ app_path }}"/wp-content/uploads
+    - file: path={{ app_path }}{{ virtualhost_domain }}/wp-content/uploads state=directory
   
     - debug: msg="Application | Create Database configuration file for the site"
-    - template: src=wp-config.php.j2 dest={{ app_path }}/wp-config.php
+    - template: src=wp-config.php.j2 dest={{ app_path }}{{ virtualhost_domain }}/wp-config.php
   
     - debug: msg="Application | Permission set for the documentroot"
     - file:
@@ -79,6 +80,7 @@
         owner: apache
         group: apache
         recurse: yes
-      
+        
+      notify: Restart Apache
   when: wordpress_install.stat.exists == False
 ...
