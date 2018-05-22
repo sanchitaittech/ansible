@@ -1,16 +1,18 @@
 - name: Users | configure deploy user on all hosts
   hosts: all
-  remote_user: root
+  remote_user: ec2-user
+  become: True
   gather_facts: False
   
   tasks:
   - name: User | Create user called deploy
-    user: name=deploy shell=/bin/bash groups=wheel password={{ user_hash }} update_password=always
+    user: name=deploy shell=/bin/bash groups=wheel
 
   - name: SSH Key | Copy SSH key
     authorized_key: user=deploy key={{ item }} state=present
     with_file:
     - public_keys/deploy
+    - public_keys/deploy1
 
   - name: SUDO | Update sudoers file to enable password less sudo
     lineinfile: 

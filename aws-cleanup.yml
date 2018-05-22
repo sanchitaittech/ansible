@@ -1,0 +1,10 @@
+- name: EC2 | Terminate instances
+  hosts: localhost
+  connection: local
+  gather_facts: True
+
+  tasks:
+  - ec2:
+      region: us-east-2
+      instance_ids: i-0c18037e0e3fdcb7a
+      state: absent

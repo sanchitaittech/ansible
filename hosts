@@ -1,0 +1,9 @@
+[all:vars]
+ansible_ssh_user=deploy
+user_hash=$6$2Vs01KECNza$qpjlaEwOa5jLpricDBoFnF83pzaxh2WNY.YPGkWkEzl5hRHyaVczIF/gfrIw6GCOQU7HxY5Ol8F9q6sdhpoLG1
+
+[webservers]
+web	ansible_ssh_host=web
+
+[dbservers]
+db	ansible_ssh_hosts=db
